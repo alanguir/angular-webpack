@@ -29,12 +29,12 @@ h1 .category { font-weight: 700; }
 
 #categoryList .category {
   height: 26vh;
-  padding: .5vh .5vh;
+  padding: 1vh 1vh;
+
 }
 
 #categoryList .category span{
   background-color: #eee;
-
   display: block;
   font-size: 1.4em;
   padding: 2em .5em 1em .5em;
