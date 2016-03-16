@@ -78,7 +78,9 @@ module.exports = function makeWebpackConfig () {
 
   // Initialize module
   config.module = {
-    preLoaders: [],
+    preLoaders: [
+      { test: /\.js$/, loader: "envify-loader" }
+    ],
     loaders: [{
       // JS LOADER
       // Reference: https://github.com/babel/babel-loader
