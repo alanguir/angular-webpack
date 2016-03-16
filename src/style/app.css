@@ -2,6 +2,7 @@
 
 body {
   font-family: 'Source Sans Pro', sans-serif;
+  text-align: center;
 }
 
 
@@ -12,15 +13,40 @@ html, button, input, select, textarea,
 }
 
 .pure-g > div {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
+
     box-sizing: border-box;
 }
 
+#title-bar {
+  height: 12vh;
+}
+#title-bar h1 {
+  margin: 0; padding: 0;
+  line-height: 12vh;
+}
 h1 .appName { font-weight: 200; }
 h1 .category { font-weight: 700; }
 
-#category-list .cateogry {
+#categoryList .category {
+  height: 26vh;
+  padding: .5vh .5vh;
+}
+
+#categoryList .category span{
   background-color: #eee;
-  text-align: center;
+
+  display: block;
+  font-size: 1.4em;
+  padding: 2em .5em 1em .5em;
+  line-height: 1.4em;
+  height: 100%;
+  box-sizing: border-box;
+
+}
+#categoryList .category span.oversize{
+  padding-top: 1.4em;
+}
+
+footer {
+  height: 10vh;
 }

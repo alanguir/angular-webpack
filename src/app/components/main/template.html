@@ -6,9 +6,12 @@
     <div class="pure-u-1-12">
       &lt;
     </div>
-    <div id="category-list" class="pure-u-5-6 pure-g">
-      <div class="pure-u-1-3 category" ng-repeat="(key, value) in app.categories">
-        <span data-category="{{key}}">{{value}}</span>
+    <div id="categoryList" class="pure-u-5-6 pure-g">
+      <div class="category pure-u-1-3" ng-repeat="(key, value) in app.categories">
+        <span ng-class="app.oversize(value)? 'oversize':''"
+              ng-mousedown="app.search(key)">
+          {{value}}
+        </span>
       </div>
     </div>
     <div class="pure-u-1-12">

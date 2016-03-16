@@ -4,4 +4,12 @@ export default /*@ngInject*/ function (CategoryFactory) {
     .then(function(cats){
       vm.categories = cats;
     })
+
+  vm.oversize = function(text){
+    if (text.length > 15){ return true; }
+  }
+
+  vm.search = function(category){
+    console.log('search for', category);
+  }
 }
