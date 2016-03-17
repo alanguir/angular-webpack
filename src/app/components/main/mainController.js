@@ -1,4 +1,4 @@
-export default /*@ngInject*/ function (CategoryFactory) {
+export default /*@ngInject*/ function (CategoryFactory, $location) {
   var vm = this;
   CategoryFactory.get()
     .then(function(cats){
@@ -11,5 +11,6 @@ export default /*@ngInject*/ function (CategoryFactory) {
 
   vm.search = function(category){
     console.log('search for', category);
+    $location.path('/search/' + category);
   }
 }
