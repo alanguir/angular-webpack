@@ -25,7 +25,7 @@ angular.module('nearby', [
   .constant('TOKEN', process.env.TOKEN)
   .constant('SECRET', process.env.SECRET)
   .config(config)
-  .run(function($route){
+  .run(function($route) {
     $route.reload();
     console.log('running...', $route)
   })
