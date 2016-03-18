@@ -3,7 +3,7 @@ var oauthSignature = require('oauth-signature');
 var baseUrl = 'https://api.yelp.com/v2';
 var searchRadius = 5 * 1609; //miles * meters/mile
 
-export default /*@ngInject*/ function ($q, YELP_KEY, YELP_SECRET, TOKEN, SECRET) {
+export default /*@ngInject*/ function ($q, $http, YELP_KEY, YELP_SECRET, TOKEN, SECRET) {
   console.log('got a key!', oauthBase());
 
   return {
@@ -11,8 +11,8 @@ export default /*@ngInject*/ function ($q, YELP_KEY, YELP_SECRET, TOKEN, SECRET)
   };
 
   function _nearby(category){
-    getPosition.then(function(pos){
-      return params = {
+    return getPosition().then(function(pos){
+      return {
         'category_filter': category,
         'radius_filter': searchRadius,
         'll': _.join([pos.lat, pos.lng],',')
@@ -20,13 +20,26 @@ export default /*@ngInject*/ function ($q, YELP_KEY, YELP_SECRET, TOKEN, SECRET)
 
     })
     .then(function(params){
-      var url = baseUrl
-      $http({
-        url: myUrl,
-        method: 'GET',
-        params: params,
-        paramSerializer: '$httpParamSerializerJQLike'
-      });
+      var url =  baseUrl + '/search';
+      var method = 'GET';
+      var _headers = authHeaders(url, params);
+      var headers = _.pick(_headers.params, [
+        'oauth_consumer_key',
+        'oauth_token',
+        'oauth_signature_method',
+        'oauth_timestamp',
+        'oauth_nonce'
+      ]);
+      headers['oauth_signature'] = _headers.signature;
+
+      var httpConfig = {
+        'url': url,
+        'method': method,
+        'params': params,
+        'headers': headers
+      };
+      console.log('httpConfig', httpConfig);
+      return $http(httpConfig);
     })
   }
 
@@ -37,13 +50,13 @@ export default /*@ngInject*/ function ($q, YELP_KEY, YELP_SECRET, TOKEN, SECRET)
     })
   }
 
-  function authHeaders(method, url, params){
+  function authHeaders(url, params, method){
     if(!method){ method = 'GET'; }
-    angular.extend(params, oauthBase());
-    var signature = oauthSignature.generate(method, url, params, YELP_SECRET, SECRET);
+    var _params = angular.extend({}, params, oauthBase());
+    var signature = oauthSignature.generate(method, url, _params, YELP_SECRET, SECRET);
 
     return {
-      params: params,
+      params: _params,
       signature: signature
     }
   }

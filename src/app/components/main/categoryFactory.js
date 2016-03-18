@@ -3,7 +3,8 @@ export default /*@ngInject*/ function ($q){
   var categories;
 
   return {
-    get: readCategories
+    get: readCategories,
+    label: _label
   };
 
   function readCategories(){
@@ -22,5 +23,15 @@ export default /*@ngInject*/ function ($q){
     }
 
     return categories;
+  }
+
+  function _label(key){
+    var _cats;
+    if(!categories){ _cats = readCategories(); }
+    else { _cats = categories; }
+
+    return _cats.then(function(cats){
+      return cats[key];
+    })
   }
 }

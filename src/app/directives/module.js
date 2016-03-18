@@ -1,4 +1,6 @@
 import heading from './heading/directive';
+import foot from './foot/directive';
 
-angular.module('nearby.directives', [])
-  .directive('heading',  heading);
+export default angular.module('nearby.directives', [])
+  .directive('heading',  heading)
+  .directive('foot',  foot);
