@@ -1,81 +1,76 @@
-var oauthSignature = require('oauth-signature');
-
+//var oauthSignature = require('oauth-signature');
+var OAuth   = require('oauth-1.0a');
 var baseUrl = 'https://api.yelp.com/v2';
-var searchRadius = 5 * 1609; //miles * meters/mile
 
-export default /*@ngInject*/ function ($q, $http, YELP_KEY, YELP_SECRET, TOKEN, SECRET) {
-  console.log('got a key!', oauthBase());
+export default /*@ngInject*/ function ($q, $http, YELP) {
+
+  var oauth = OAuth({
+    consumer: YELP.consumer,
+    signature_method: 'HMAC-SHA1'
+  });
 
   return {
     nearby: _nearby
   };
 
-  function _nearby(category){
+  function _nearby(category, perPage, pageOffset) {
+
+    if(!perPage){perPage = 3;}
+    if(!pageOffset){pageOffset = 0}
+
+    var offset = pageOffset * perPage;
+
     return getPosition().then(function(pos){
       return {
         'category_filter': category,
-        'radius_filter': searchRadius,
-        'll': _.join([pos.lat, pos.lng],',')
+        'll': _.join([pos.lat, pos.lng],','),
+        'sort': 1,
+        'limit': perPage,
+        'offset': offset
       }
 
     })
-    .then(function(params){
-      var url =  baseUrl + '/search';
-      var method = 'GET';
-      var _headers = authHeaders(url, params);
-      var headers = _.pick(_headers.params, [
-        'oauth_consumer_key',
-        'oauth_token',
-        'oauth_signature_method',
-        'oauth_timestamp',
-        'oauth_nonce'
-      ]);
-      headers['oauth_signature'] = _headers.signature;
+    .then(function(params) {
 
-      var httpConfig = {
-        'url': url,
-        'method': method,
-        'params': params,
-        'headers': headers
+      var request_data = {
+        url: baseUrl + '/search',
+        method: 'GET',
+        data: params
       };
-      console.log('httpConfig', httpConfig);
-      return $http(httpConfig);
+      var signed = signRequest(request_data)
+
+      return $http({
+        url: request_data.url,
+        method: request_data.method,
+        params: _.assign(signed.data,signed.param)
+      });
+
     })
   }
 
   function getPosition() {
     return $q.resolve({
-      lat: 42.331389,
-      lng: -83.045833
+      lat: 42.347231799999996,
+      lng: -83.07475989999999
     })
   }
 
-  function authHeaders(url, params, method){
-    if(!method){ method = 'GET'; }
-    var _params = angular.extend({}, params, oauthBase());
-    var signature = oauthSignature.generate(method, url, _params, YELP_SECRET, SECRET);
+  function signRequest(request_data) {
+    /* We can setup default parameters here */
+    var default_parameters = {
+      radius_filter: milesToMeters(5),
+    };
+
+    request_data.data = _.assign(default_parameters, request_data.data);
 
     return {
-      params: _params,
-      signature: signature
+      data: request_data.data,
+      param: oauth.authorize(request_data, YELP.token)
     }
+  };
+
+  function milesToMeters(miles){
+    return miles * 1609; //miles * meters/mile
   }
 
-  function oauthBase(){
-    return {
-        oauth_consumer_key : YELP_KEY,
-        oauth_token : SECRET,
-        oauth_nonce : nonce(),
-        oauth_timestamp : Date.now(),
-        oauth_signature_method : 'HMAC-SHA1',
-        oauth_version : '1.0'
-    }
-    function nonce() {
-      var chars = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-      var vals = _.times(_.random(10, 30), function(){
-        return chars[_.random(chars.length -1)];
-      });
-      return 'nearby' + vals.join('');
-    }
-  }
 }

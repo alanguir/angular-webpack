@@ -20,10 +20,20 @@ angular.module('nearby', [
     THIS DATA WILL BE VISIBLE IN YOUR SOURCE CODE IF YOU PUT THIS ON THE WEB!
     YOU DON'T WANT THAT!
   */
-  .constant('YELP_KEY', process.env.CONSUMER_KEY)
-  .constant('YELP_SECRET', process.env.CONSUMER_KEY)
+  .constant('CONSUMER_KEY', process.env.CONSUMER_KEY)
+  .constant('CONSUMER_SECRET', process.env.CONSUMER_SECRET)
   .constant('TOKEN', process.env.TOKEN)
-  .constant('SECRET', process.env.SECRET)
+  .constant('TOKEN_SECRET', process.env.TOKEN_SECRET)
+  .constant('YELP', {
+    consumer: {
+      public: process.env.CONSUMER_KEY,
+      secret: process.env.CONSUMER_SECRET
+    },
+    token: {
+      public: process.env.TOKEN,
+      secret: process.env.TOKEN_SECRET
+    }
+  })
   .config(config)
   .run(function($route) {
     $route.reload();
