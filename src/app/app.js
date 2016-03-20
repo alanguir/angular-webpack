@@ -4,7 +4,7 @@ require('./vendor');
 require('./components/module');
 
 //styles
-require('../style/app.css');
+require('../style/app.less');
 
 // directives
 require('./directives/module');
@@ -38,4 +38,22 @@ angular.module('nearby', [
   .run(function($route) {
     $route.reload();
     console.log('running...', $route)
+  })
+  .filter('placeholderImage', function(){
+    return function(url) {
+      if (!url) {
+        return '/img/placeholder.png';
+      }
+      return url;
+    }
+  })
+  .filter('scaleImg', function() {
+    return function(url, size) {
+      if (!size) { size='l'; }
+      //Sizes - s, ms, l, o
+      if (url) {
+        return url.replace(/\/[s,m,l,o]+(\.jpg)$/g, '/' + size + '$1');
+      }
+      return url;
+    }
   })

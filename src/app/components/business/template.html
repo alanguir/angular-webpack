@@ -5,7 +5,7 @@
       <p>
         {{business.distance | number:1}} miles away</br>
         <img ng-src="{{business.details.rating_img_url}}"><br/>
-        <img ng-src="{{business.details.image_url}}" >
+        <img ng-src="{{business.details.image_url | scaleImg:'o' | placeholderImage }}" >
       </p>
 
     </div>
