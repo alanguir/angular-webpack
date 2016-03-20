@@ -1,4 +1,4 @@
-export default /*@ngInject*/ function (CategoryFactory, YelpFactory, $routeParams) {
+export default /*@ngInject*/ function (CategoryFactory, YelpFactory, $routeParams, $location) {
   var vm = this;
   vm.limits = {
     page: 0,
@@ -20,6 +20,12 @@ export default /*@ngInject*/ function (CategoryFactory, YelpFactory, $routeParam
 
   vm.nextPage = scrub.bind(null, 1)
   vm.prevPage = scrub.bind(null, -1)
+
+  vm.focusOn = function(business) {
+    console.log('focusing on', business);
+    YelpFactory.metaCache(business);
+    $location.path('/business/' + business.id);
+  }
 
   function scrub(distance) {
     var currentPage = vm.limits.page;

@@ -1,5 +1,6 @@
 //var oauthSignature = require('oauth-signature');
 var OAuth   = require('oauth-1.0a');
+var haversine = require('haversine');
 var baseUrl = 'https://api.yelp.com/v2';
 
 export default /*@ngInject*/ function ($q, $http, YELP) {
@@ -9,9 +10,51 @@ export default /*@ngInject*/ function ($q, $http, YELP) {
     signature_method: 'HMAC-SHA1'
   });
 
+  var _metaCache = {};
+
   return {
-    nearby: _nearby
+    nearby: _nearby,
+    details: _details,
+    metaCache: metaCache,
+    distance: _distance
   };
+
+  function _distance(destinationCoords, unit) {
+
+    return getPosition().then(function(coords) {
+      var start = {
+        latitude: coords.lat,
+        longitude: coords.lng
+      }
+
+      var end = destinationCoords;
+      return haversine(start, end, {unit: 'mile'});
+    })
+
+
+  }
+
+  function metaCache(properties) {
+    if (properties) {
+      _metaCache = properties;
+    }
+    return _metaCache
+  }
+
+  function _details(id) {
+    var request_data = {
+      url: baseUrl + '/business/' + id,
+      method: 'GET',
+      data: {}
+    };
+    var signed = signRequest(request_data)
+
+    return $http({
+      url: request_data.url,
+      method: request_data.method,
+      params: _.assign(signed.data,signed.param)
+    })
+  }
 
   function _nearby(category, perPage, pageOffset) {
 

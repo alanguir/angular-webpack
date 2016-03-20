@@ -26,6 +26,7 @@
     "envify": "^1.2.1",
     "envify-loader": "^0.1.0",
     "gulp": "^3.9.1",
+    "haversine": "^1.0.0",
     "install": "^0.6.0",
     "lodash": "^4.6.1",
     "nonce": "^1.0.3",
