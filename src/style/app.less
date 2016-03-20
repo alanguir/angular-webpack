@@ -16,37 +16,131 @@ html, button, input, select, textarea,
 
     box-sizing: border-box;
 }
-
+h1 { font-weight: 200; }
 #title-bar {
   height: 12vh;
+  h1 {
+    margin: 0; padding: 0;
+    line-height: 12vh;
+    .category { font-weight: 700; }
+  }
 }
-#title-bar h1 {
-  margin: 0; padding: 0;
-  line-height: 12vh;
-}
-h1 .appName { font-weight: 200; }
-h1 .category { font-weight: 700; }
 
 #categoryList .category {
   height: 26vh;
   padding: 1vh 1vh;
-
+  span {
+    background-color: #eee;
+    display: block;
+    font-size: 1.4em;
+    padding: 2em .5em 1em .5em;
+    line-height: 1.4em;
+    height: 100%;
+    box-sizing: border-box;
+    &.oversize{
+      padding-top: 1.4em;
+    }
+  }
 }
 
-#categoryList .category span{
-  background-color: #eee;
-  display: block;
-  font-size: 1.4em;
-  padding: 2em .5em 1em .5em;
-  line-height: 1.4em;
-  height: 100%;
-  box-sizing: border-box;
+.searchResult {
+  padding: 0 .5em;
+  height: 78vh;
+  overflow: hidden;
+  &--top {
+    background-color: #eee;
+    height: 50%;
+    overflow: hidden;
+  }
+  &--bottom {
 
-}
-#categoryList .category span.oversize{
-  padding-top: 1.4em;
+    height: 50%;
+    display: block;
+    overflow: hidden;
+
+    background-image: url('/img/placeholder.png');
+    background-size: cover;
+    background-position: center;
+  }
 }
 
+.details-left {
+  text-align: left;
+  padding: 1em;
+  h1 {
+    margin: 0;
+  }
+}
+
+.details-right {
+  height: 100vh;
+  &--top, &--bottom {
+    height: 50%;
+    background-color: #eee;
+  }
+  &.no-image {
+    .details-right--top { display: none; }
+    .details-right--bottom {
+      height: 100%;
+    }
+  }
+  &--top {
+    background-size: cover;
+    background-position: center;
+  }
+}
+
+.details-back {
+  position: absolute;
+  bottom: 0;
+  height: 12vh;
+  border-top: 1px solid #eee;
+  width: 50%;
+  margin-left: -1em;
+  text-align: center;
+  line-height: 12vh;
+}
+.scrub {
+  line-height: 78vh;
+  text-align: center;
+}
 footer {
   height: 10vh;
+  > * {
+    padding: 1em;
+    color: #aaa;
+  }
+  .credit {
+    text-align: left;
+  }
+  .version {
+    text-align: right;
+  }
+}
+
+
+.chevron::before {
+	border-style: solid;
+  border-color: #C1272D;
+	border-width: 0.2em 0.2em 0 0;
+	content: '';
+	display: inline-block;
+	height: 1.5em;
+  width: 1.5em;
+
+	transform: rotate(-45deg);
+}
+.chevron.disabled::before {
+  border-color: #eee;
+}
+.chevron.right:before {
+	transform: rotate(45deg);
+}
+
+.chevron.bottom:before {
+	transform: rotate(135deg);
+}
+
+.chevron.left:before {
+	transform: rotate(-135deg);
 }

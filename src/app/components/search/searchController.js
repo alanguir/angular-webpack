@@ -43,13 +43,18 @@ export default /*@ngInject*/ function (CategoryFactory, YelpFactory, $routeParam
   }
 
   function showPage(page) {
+    var oldResults = vm.results;
     vm.loading = true;
+    vm.results = [{}, {}, {}];
     return resultsForPage(page)
       .then(processResults)
       .then(function(results) {
         console.log(results);
         vm.results = results.businesses;
         return vm.results
+      })
+      .catch(function() {
+        vm.results = oldResults;
       })
       .finally(function() {
         vm.loading = false;
@@ -67,7 +72,7 @@ export default /*@ngInject*/ function (CategoryFactory, YelpFactory, $routeParam
     if(res.total && res.total !== lim.totalResults) {
       update = {
         totalResults: res.total,
-        totalPages: Math.ceil(res.total/lim.perPage)
+        totalPages: Math.ceil(res.total/lim.perPage) -1
       };
     }
     return update;

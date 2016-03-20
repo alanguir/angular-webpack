@@ -1,12 +1,24 @@
 <main>
   <div class="pure-g">
-    <h1 class="pure-u-1">{{business.details.name}}</h1>
-    <div class="pure-u-1">
+    <div class="pure-u-1-2 details-left">
+      <h1>{{business.details.name}}</h1>
       <p>
         {{business.distance | number:1}} miles away</br>
         <img ng-src="{{business.details.rating_img_url}}"><br/>
-        <img ng-src="{{business.details.image_url | scaleImg:'o' | placeholderImage }}" >
       </p>
+      <div class="details-back" ng-click="business.goBack()">
+        Back
+      </div>
+    </div>
+    <div class="pure-u-1-2 details-right" ng-class="business.details.image_url ? '': 'no-image'">
+
+      <div poster ng-if="business.details.image_url"
+           class="details-right--top"
+           url="business.details.image_url"></div>
+
+      <div class="details-right--bottom">
+        Map
+      </div>
 
     </div>
   </div>
