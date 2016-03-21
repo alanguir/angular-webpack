@@ -5,6 +5,7 @@
       <p>
         {{business.distance | number:1}} miles away</br>
         <img ng-src="{{business.details.rating_img_url}}"><br/>
+        <img src="{{business.mapUrl}}"/>
       </p>
       <div class="details-back" ng-click="business.goBack()">
         Back
@@ -16,11 +17,10 @@
            class="details-right--top"
            url="business.details.image_url"></div>
 
-      <div class="details-right--bottom">
-        Map
+      <div class="details-right--bottom" style="background-image': url('{{business.mapUrl}}')">
+
       </div>
 
     </div>
   </div>
-
 </main>

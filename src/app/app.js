@@ -9,6 +9,7 @@ require('../style/app.less');
 // directives
 require('./directives/module');
 
+
 angular.module('nearby', [
     'ui.router',
     'ct.ui.router.extras',
@@ -25,6 +26,7 @@ angular.module('nearby', [
   .constant('CONSUMER_SECRET', process.env.CONSUMER_SECRET)
   .constant('TOKEN', process.env.TOKEN)
   .constant('TOKEN_SECRET', process.env.TOKEN_SECRET)
+  .constant('MAPBOX', process.env.MAPBOX)
   .constant('YELP', {
     consumer: {
       public: process.env.CONSUMER_KEY,
