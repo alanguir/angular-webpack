@@ -1,3 +1,4 @@
+<div ui-view></div>
 <heading id="title-bar" category="search.category"></heading>
 
 <main>
@@ -12,7 +13,7 @@
             <p>
               <h2>{{business.rating | number:1}}</h2>
               <img ng-src="{{business.rating_img_url}}"><br/>
-              <strong>{{business.review_count}} reviewed</strong>
+              <strong ng-show="business.review_count">{{business.review_count}} reviewed</strong>
             </p>
           </div>
           <div ng-if="!search.loading" poster class="searchResult--bottom" url="business.image_url" size="'ls'"></div>

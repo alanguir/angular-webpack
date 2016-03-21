@@ -10,7 +10,8 @@ require('../style/app.less');
 require('./directives/module');
 
 angular.module('nearby', [
-    'ngRoute',
+    'ui.router',
+    'ct.ui.router.extras',
     'nearby.yelp',
     'nearby.main',
     'nearby.directives'
@@ -35,25 +36,7 @@ angular.module('nearby', [
     }
   })
   .config(config)
-  .run(function($route) {
-    $route.reload();
-    console.log('running...', $route)
-  })
-  .filter('placeholderImage', function(){
-    return function(url) {
-      if (!url) {
-        return '/img/placeholder.png';
-      }
-      return url;
-    }
-  })
-  .filter('scaleImg', function() {
-    return function(url, size) {
-      if (!size) { size='l'; }
-      //Sizes - s, ms, l, o
-      if (url) {
-        return url.replace(/\/[s,m,l,o]+(\.jpg)$/g, '/' + size + '$1');
-      }
-      return url;
-    }
-  })
+  // .run(function($route) {
+  //   $route.reload();
+  //   console.log('running...', $route)
+  // })

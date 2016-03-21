@@ -1,7 +1,8 @@
 import angular from 'angular';
 import _ from 'lodash';
 
-require('angular-route');
+require('angular-ui-router');
+require('ui-router-extras');
 
 // styles
 require('purecss/build/pure.css');

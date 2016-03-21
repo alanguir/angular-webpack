@@ -2,26 +2,29 @@ import AppCtrl from './components/main/mainController.js';
 import SearchCtrl from './components/search/searchController.js';
 import BusinessCtrl from './components/business/businessController.js';
 
-export default /*@ngInject*/ function($routeProvider) {
+export default /*@ngInject*/ function($stateProvider, $urlRouterProvider) {
     console.log('setting up routes');
 
-    $routeProvider.
-      when('/', {
+    $urlRouterProvider.otherwise('/');
+
+    $stateProvider
+      .state('home', {
+        url: '/',
         template: require('./components/main/template.html'),
         controller: AppCtrl,
         controllerAs: 'app'
-      }).
-      when('/search/:category', {
+      })
+      .state('search', {
+        url: '/search/{category}?page',
         template: require('./components/search/template.html'),
         controller: SearchCtrl,
-        controllerAs: 'search'
-      }).
-      when('/business/:id', {
+        controllerAs: 'search',
+        sticky: true,
+      })
+      .state('search.business', {
+        url: '^/business/:id',
         template: require('./components/business/template.html'),
         controller: BusinessCtrl,
         controllerAs: 'business'
-      }).
-      otherwise({
-        redirectTo: '/'
       });
   }

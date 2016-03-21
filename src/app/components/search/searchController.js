@@ -1,12 +1,12 @@
-export default /*@ngInject*/ function (CategoryFactory, YelpFactory, $routeParams, $location) {
+export default /*@ngInject*/ function (CategoryFactory, YelpFactory, $stateParams, $state) {
   var vm = this;
   vm.limits = {
-    page: 0,
+    page: $stateParams.page | 0,
     perPage: 3,
     totalResults: 0,
     totalPages: 0
   }
-  vm.searchTerm = $routeParams.category;
+  vm.searchTerm = $stateParams.category;
   var resultsForPage = _.partial(YelpFactory.nearby, vm.searchTerm, vm.limits.perPage);
 
   showPage(0);
@@ -24,7 +24,7 @@ export default /*@ngInject*/ function (CategoryFactory, YelpFactory, $routeParam
   vm.focusOn = function(business) {
     console.log('focusing on', business);
     YelpFactory.metaCache(business);
-    $location.path('/business/' + business.id);
+    $state.go('search.business',{id: business.id});
   }
 
   function scrub(distance) {
@@ -63,6 +63,11 @@ export default /*@ngInject*/ function (CategoryFactory, YelpFactory, $routeParam
 
   function processResults(results) {
     if(results.data){results = results.data}
+    results.businesses = _.filter(results.businesses, function(venue){
+      return !venue.is_closed;
+    });
+
+    console.log('results', results)
     vm.limits = _.assign(vm.limits, trackTotalForResults(results, vm.limits));
     return results;
   }

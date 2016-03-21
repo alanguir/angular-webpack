@@ -1,6 +1,6 @@
-export default /*@ngInject*/ function (YelpFactory, $routeParams, $location, $window) {
+export default /*@ngInject*/ function (YelpFactory, $stateParams, $state) {
   var vm = this;
-  vm.id = $routeParams.id;
+  vm.id = $stateParams.id;
   vm.details = YelpFactory.metaCache();
 
   if (!vm.details || vm.details.id != vm.id) {
@@ -17,7 +17,7 @@ export default /*@ngInject*/ function (YelpFactory, $routeParams, $location, $wi
   }
 
   vm.goBack = function(){
-    $window.history.back();
+    $state.go('search');
   }
 
   function calcDistance(details) {
